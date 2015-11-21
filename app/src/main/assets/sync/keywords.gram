@@ -1,0 +1,22 @@
+#JSGF V1.0;
+
+grammar keywords;
+
+<keyword> = hi my phone    |
+          open window  |
+          close window   |
+          open browser  |
+          close browser |
+          open calculator |
+          close calculator |
+          open game   |
+          close game |
+          notification |
+          go back |
+          go home|
+          open camera|
+          close camera|
+          shoot;
+
+
+public <keywords> = <keyword>;
