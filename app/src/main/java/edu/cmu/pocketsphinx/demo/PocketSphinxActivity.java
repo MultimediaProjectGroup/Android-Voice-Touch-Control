@@ -128,6 +128,9 @@ public class PocketSphinxActivity extends Activity implements
             } else if(text.equalsIgnoreCase("shoot")){
                 intent.setAction(Constant.ACTION_SHOOT);
                 startService(intent);
+            } else if(text.equalsIgnoreCase("open game")){
+                intent.setAction(Constant.ACTION_OPEN_GAME);
+                startService(intent);
             }
 
             makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
@@ -161,11 +164,14 @@ public class PocketSphinxActivity extends Activity implements
                 .setRawLogDir(assetsDir)
                 
                 // Threshold to tune for keyphrase to balance between false alarms and misses
-                .setKeywordThreshold(1e-1f)
+                .setKeywordThreshold(1e-20f)
                 
                 // Use context-independent phonetic search, context-dependent is too slow for mobile
-                //.setBoolean("-allphone_ci", true)
-                
+                .setBoolean("-allphone_ci", true)
+
+                //.setInteger("-pl_window",10)
+
+
                 .getRecognizer();
 
         recognizer.addListener(this);

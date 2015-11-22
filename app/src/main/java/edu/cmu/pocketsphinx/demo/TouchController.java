@@ -72,8 +72,11 @@ public class TouchController extends Service {
         }  else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_OPEN_CAMERA)) {
             open_Camera();
         } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_SHOOT)) {
-            rootShellCmd.simulateKey(KeyEvent.KEYCODE_FOCUS);
-            rootShellCmd.simulateKey(KeyEvent.KEYCODE_CAMERA);
+            tap();
+//            rootShellCmd.simulateKey(KeyEvent.KEYCODE_FOCUS);
+//            rootShellCmd.simulateKey(KeyEvent.KEYCODE_CAMERA);
+        } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_OPEN_GAME)) {
+            open_Game();
         }
 
     }
@@ -107,6 +110,49 @@ public class TouchController extends Service {
         rootShellCmd.simulateSwip(temp);
     }
 
+    public void swipe_down(){
+        DisplayMetrics displaymetrics = getResources().getDisplayMetrics();
+        int y = displaymetrics.heightPixels;
+        int x = displaymetrics.widthPixels;
+        String temp = x / 2 +" "+ y/4 +" "+ x / 2 + " " + 3*y/4;
+        rootShellCmd.simulateSwip(temp);
+    }
+
+    public void swipe_up(){
+        DisplayMetrics displaymetrics = getResources().getDisplayMetrics();
+        int y = displaymetrics.heightPixels;
+        int x = displaymetrics.widthPixels;
+        String temp =  x / 2 + " " + 3*y/4+" "+x / 2 +" "+ y/4 ;
+        rootShellCmd.simulateSwip(temp);
+    }
+
+    public void swipe_left(){
+        DisplayMetrics displaymetrics = getResources().getDisplayMetrics();
+        int y = displaymetrics.heightPixels;
+        int x = displaymetrics.widthPixels;
+        String temp =  x / 4 + " " + y/2+" "+3*x/4 +" "+ y/2;
+        rootShellCmd.simulateSwip(temp);
+    }
+
+    public void swipe_right(){
+        DisplayMetrics displaymetrics = getResources().getDisplayMetrics();
+        int y = displaymetrics.heightPixels;
+        int x = displaymetrics.widthPixels;
+        String temp =  3*x / 4 + " " + y/2+" "+ x/4 +" "+ y/2;
+        rootShellCmd.simulateSwip(temp);
+    }
+
+    public void tap(){
+        DisplayMetrics displaymetrics = getResources().getDisplayMetrics();
+        int y = displaymetrics.heightPixels;
+        int x = displaymetrics.widthPixels;
+        String temp =  x / 2 + " " + y/2;
+        rootShellCmd.simulateTap(temp);
+    }
+
+
+
+
     public void open_Brower(){
         //Toast.makeText(this, "open_Brower", Toast.LENGTH_SHORT).show();
         rootShellCmd.exec("am start -a android.intent.action.VIEW -d http://www.google.com --ez create_new_tab true");
@@ -134,6 +180,11 @@ public class TouchController extends Service {
     public void close_Camera(){
         //go_home();
 //        rootShellCmd.exec("am force-stop com.android.camera");
+    }
+
+    public void open_Game(){
+        rootShellCmd.exec("monkey -p com.dotgears.flappybird -c android.intent.category.LAUNCHER 1");
+
     }
 
 }

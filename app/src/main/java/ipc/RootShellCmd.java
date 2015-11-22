@@ -40,4 +40,8 @@ public class RootShellCmd {
     public final void simulateSwip(String direction) {
         exec("input swipe " + direction + "\n");
     }
+
+    public final void simulateTap(String direction) {
+        exec("input tap " + direction + "\n");
+    }
 }
