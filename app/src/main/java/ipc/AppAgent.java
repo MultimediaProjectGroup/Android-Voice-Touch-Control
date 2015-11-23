@@ -30,78 +30,65 @@ public class AppAgent {
     /*
     * Get IMEI information
     */
-    public String getImei()
-    {
-        String str2 = ((TelephonyManager)this.mContext.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+    public String getImei() {
+        String str2 = ((TelephonyManager) this.mContext.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
         String str1;
-        if (str2 != null)
-        {
+        if (str2 != null) {
             str1 = str2;
-            if (!str2.equals("")) {}
-        }
-        else
-        {
+            if (!str2.equals("")) {
+            }
+        } else {
             str1 = getMacAddress();
         }
         return str1;
     }
 
-    public String getMacAddress()
-    {
-        return ((WifiManager)this.mContext.getSystemService(Context.WIFI_SERVICE)).getConnectionInfo().getMacAddress();
+    public String getMacAddress() {
+        return ((WifiManager) this.mContext.getSystemService(Context.WIFI_SERVICE)).getConnectionInfo().getMacAddress();
     }
 
-    public boolean hasVibrator()
-    {
-        Vibrator localVibrator = (Vibrator)this.mContext.getSystemService(Context.VIBRATOR_SERVICE);
-        try
-        {
+    public boolean hasVibrator() {
+        Vibrator localVibrator = (Vibrator) this.mContext.getSystemService(Context.VIBRATOR_SERVICE);
+        try {
             boolean bool = localVibrator.hasVibrator();
             return bool;
+        } catch (Throwable localThrowable) {
         }
-        catch (Throwable localThrowable) {}
         return false;
     }
-    public void stopVibrate()
-    {
-        ((Vibrator)this.mContext.getSystemService(Context.VIBRATOR_SERVICE)).cancel();
+
+    public void stopVibrate() {
+        ((Vibrator) this.mContext.getSystemService(Context.VIBRATOR_SERVICE)).cancel();
     }
 
-    public void vibrate(int paramInt)
-    {
-        if (hasVibrator())
-        {
+    public void vibrate(int paramInt) {
+        if (hasVibrator()) {
             stopVibrate();
-            ((Vibrator)this.mContext.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(paramInt);
+            ((Vibrator) this.mContext.getSystemService(Context.VIBRATOR_SERVICE)).vibrate(paramInt);
             return;
         }
 
     }
 
-    public void playSound(String paramString)
-    {
+    public void playSound(String paramString) {
         if (this.mPlayer == null) {
             this.mPlayer = new MediaPlayer();
         }
         stopPlayingSound();
-        try
-        {
+        try {
             this.mPlayer.reset();
             this.mPlayer.setDataSource(paramString);
             this.mPlayer.prepare();
             this.mPlayer.start();
             return;
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
             this.mPlayer.release();
             this.mPlayer = null;
         }
     }
 
-    public void stopPlayingSound()
-    {
+    public void stopPlayingSound() {
         if ((this.mPlayer != null) && (this.mPlayer.isPlaying())) {
             this.mPlayer.stop();
         }

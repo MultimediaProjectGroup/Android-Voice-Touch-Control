@@ -17,7 +17,9 @@ public class Constant {
     public static final String ACTION_CLOSE_CAMERA = "close camera";
     public static final String ACTION_SHOOT = "shoot";
     public static final String ACTION_OPEN_GAME = "open game";
-
-
-
+    public static final String ACTION_TAP = "tap";
+    public static final String ACTION_SWIPE_LEFT = "swipe left";
+    public static final String ACTION_SWIPE_RIGHT = "swipe right";
+    public static final String ACTION_SWIPE_DOWN = "swipe down";
+    public static final String ACTION_SWIPE_UP = "swipe up";
 }

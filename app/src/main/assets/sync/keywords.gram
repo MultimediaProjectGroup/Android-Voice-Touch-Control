@@ -16,7 +16,11 @@ grammar keywords;
           go home|
           open camera|
           close camera|
-          shoot;
+          shoot |
+          swipe left |
+          swipe right |
+          swipe down |
+          swipe up ;
 
 
 public <keywords> = <keyword>;

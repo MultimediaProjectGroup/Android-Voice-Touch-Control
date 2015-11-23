@@ -1,32 +1,4 @@
-/* ====================================================================
- * Copyright (c) 2014 Alpha Cephei Inc.  All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY ALPHA CEPHEI INC. ``AS IS'' AND
- * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
- * NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * ====================================================================
- */
+
 
 package edu.cmu.pocketsphinx.demo;
 
@@ -35,14 +7,13 @@ import static edu.cmu.pocketsphinx.SpeechRecognizerSetup.defaultSetup;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import edu.cmu.pocketsphinx.Assets;
 import edu.cmu.pocketsphinx.Hypothesis;
 import edu.cmu.pocketsphinx.RecognitionListener;
@@ -62,21 +33,18 @@ public class PocketSphinxActivity extends Activity implements
         ((TextView) findViewById(R.id.caption_text))
                 .setText("Preparing the recognizer");
 
-        Intent intent = new Intent(getApplicationContext(),TouchController.class);
+        Intent intent = new Intent(getApplicationContext(), TouchController.class);
         startService(intent);
 
-        try
-        {
+        try {
             Assets assets = new Assets(PocketSphinxActivity.this);
             File assetDir = assets.syncAssets();
             setupRecognizer(assetDir);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             // oops
         }
 
-        ((TextView) findViewById(R.id.caption_text)).setText("Say up, down, left, right, forwards, backwards");
+        ((TextView) findViewById(R.id.caption_text)).setText("Android Voice Control");
 
         reset();
     }
@@ -100,36 +68,51 @@ public class PocketSphinxActivity extends Activity implements
         ((TextView) findViewById(R.id.result_text)).setText("");
         if (hypothesis != null) {
             String text = hypothesis.getHypstr();
-            Intent intent = new Intent(getApplicationContext(),TouchController.class);
-            if(text.equalsIgnoreCase("open browser")){
+            Intent intent = new Intent(getApplicationContext(), TouchController.class);
+            if (text.equalsIgnoreCase("open browser")) {
                 intent.setAction(Constant.ACTION_OPEN_BROWSER);
                 startService(intent);
-            } else if(text.equalsIgnoreCase("close browser")){
+            } else if (text.equalsIgnoreCase("close browser")) {
                 intent.setAction(Constant.ACTION_CLOSE_BROWSER);
                 startService(intent);
-            } else if(text.equalsIgnoreCase("open calculator")){
+            } else if (text.equalsIgnoreCase("open calculator")) {
                 intent.setAction(Constant.ACTION_OPEN_CALCULATOR);
                 startService(intent);
-            } else if(text.equalsIgnoreCase("close calculator")){
+            } else if (text.equalsIgnoreCase("close calculator")) {
                 intent.setAction(Constant.ACTION_CLOSE_CALCULATOR);
                 startService(intent);
-            } else if(text.equalsIgnoreCase("notification")){
+            } else if (text.equalsIgnoreCase("notification")) {
                 intent.setAction(Constant.ACTION_NOTIFICATION);
                 startService(intent);
-            } else if(text.equalsIgnoreCase("go home")){
+            } else if (text.equalsIgnoreCase("go home")) {
                 intent.setAction(Constant.ACTION_GO_Home);
                 startService(intent);
-            } else if(text.equalsIgnoreCase("go back")){
+            } else if (text.equalsIgnoreCase("go back")) {
                 intent.setAction(Constant.ACTION_GO_BACK);
                 startService(intent);
-            } else if(text.equalsIgnoreCase("open camera")){
+            } else if (text.equalsIgnoreCase("open camera")) {
                 intent.setAction(Constant.ACTION_OPEN_CAMERA);
                 startService(intent);
-            } else if(text.equalsIgnoreCase("shoot")){
+            } else if (text.equalsIgnoreCase("shoot")) {
                 intent.setAction(Constant.ACTION_SHOOT);
                 startService(intent);
-            } else if(text.equalsIgnoreCase("open game")){
+            } else if (text.equalsIgnoreCase("open game")) {
                 intent.setAction(Constant.ACTION_OPEN_GAME);
+                startService(intent);
+            } else if (text.equalsIgnoreCase("swipe down")) {
+                intent.setAction(Constant.ACTION_SWIPE_DOWN);
+                startService(intent);
+            } else if (text.equalsIgnoreCase("swipe up")) {
+                intent.setAction(Constant.ACTION_SWIPE_UP);
+                startService(intent);
+            } else if (text.equalsIgnoreCase("swipe left")) {
+                intent.setAction(Constant.ACTION_SWIPE_LEFT);
+                startService(intent);
+            } else if (text.equalsIgnoreCase("swipe right")) {
+                intent.setAction(Constant.ACTION_SWIPE_RIGHT);
+                startService(intent);
+            }else if (text.equalsIgnoreCase("tap")) {
+                intent.setAction(Constant.ACTION_TAP);
                 startService(intent);
             }
 
@@ -146,30 +129,29 @@ public class PocketSphinxActivity extends Activity implements
      */
     @Override
     public void onEndOfSpeech() {
-//        if (!recognizer.getSearchName().equals(KWS_SEARCH))
-//            switchSearch(KWS_SEARCH);
+//if (!recognizer.getSearchName().equals(KWS_SEARCH))
+//switchSearch(KWS_SEARCH);
         reset();
     }
-
 
     private void setupRecognizer(File assetsDir) throws IOException {
         // The recognizer can be configured to perform multiple searches
         // of different kind and switch between them
-        
+
         recognizer = defaultSetup()
                 .setAcousticModel(new File(assetsDir, "en-us-ptm"))
                 .setDictionary(new File(assetsDir, "keywords.dict"))
-                
-                // To disable logging of raw audio comment out this call (takes a lot of space on the device)
+
+                        // To disable logging of raw audio comment out this call (takes a lot of space on the device)
                 .setRawLogDir(assetsDir)
-                
-                // Threshold to tune for keyphrase to balance between false alarms and misses
+
+                        // Threshold to tune for keyphrase to balance between false alarms and misses
                 .setKeywordThreshold(1e-20f)
-                
-                // Use context-independent phonetic search, context-dependent is too slow for mobile
+
+                        // Use context-independent phonetic search, context-dependent is too slow for mobile
                 .setBoolean("-allphone_ci", true)
 
-                //.setInteger("-pl_window",10)
+                        //.setInteger("-pl_window",10)
 
 
                 .getRecognizer();
@@ -181,13 +163,14 @@ public class PocketSphinxActivity extends Activity implements
          */
 
         // Create keyword-activation search.
-//        recognizer.addKeyphraseSearch(KWS_SEARCH, KEYPHRASE);
-        
-        // Create grammar-based search for selection between demos
-//        File cmdGrammar = new File(assetsDir, "cmds.gram");
-//        recognizer.addGrammarSearch(CMD_SEARCH, cmdGrammar);
+        // recognizer.addKeyphraseSearch(KWS_SEARCH, KEYPHRASE);
 
-        File keywords = new File(assetsDir,"keywords.gram");
+        // Create grammar-based search for selection between demos
+        // File cmdGrammar = new File(assetsDir, "cmds.gram");
+        // recognizer.addGrammarSearch(CMD_SEARCH, cmdGrammar);
+
+
+        File keywords = new File(assetsDir, "keywords.gram");
         recognizer.addGrammarSearch(CMD_SEARCH, keywords);
 
         // Create grammar-based search for digit recognition
@@ -213,8 +196,8 @@ public class PocketSphinxActivity extends Activity implements
 //        switchSearch(KWS_SEARCH);
         reset();
     }
-    private void reset()
-    {
+
+    private void reset() {
         recognizer.stop();
         recognizer.startListening(CMD_SEARCH);
     }

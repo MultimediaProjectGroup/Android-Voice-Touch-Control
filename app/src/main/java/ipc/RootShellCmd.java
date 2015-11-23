@@ -7,11 +7,7 @@ import java.io.OutputStream;
  */
 public class RootShellCmd {
     private OutputStream os;
-    /**
-     * 执行shell指令 *
-     *
-     * @param cmd * 指令
-     */
+
     public final void exec(String cmd) {
         try {
             if (os == null) {
@@ -19,7 +15,7 @@ public class RootShellCmd {
                 os = Runtime.getRuntime().exec("su").getOutputStream();
             }
             os.write(cmd.getBytes());
-            if(!cmd.trim().endsWith("\n")){
+            if (!cmd.trim().endsWith("\n")) {
                 os.write("\n".getBytes());
             }
             os.flush();
@@ -29,10 +25,6 @@ public class RootShellCmd {
         }
     }
 
-    /**
-     * 后台模拟全局按键 *
-     * @param keyCode * 键值
-     */
     public final void simulateKey(int keyCode) {
         exec("input keyevent " + keyCode + "\n");
     }

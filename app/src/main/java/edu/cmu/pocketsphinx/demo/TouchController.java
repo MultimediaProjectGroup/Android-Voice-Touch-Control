@@ -58,34 +58,42 @@ public class TouchController extends Service {
         } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_VOLUME_DOWN)) {
             volumeDown();
         } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_OPEN_BROWSER)) {
-            open_Brower();
+            openBrower();
         } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_CLOSE_BROWSER)) {
-            close_Brower();
+            closeBrower();
         } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_OPEN_CALCULATOR)) {
-            open_Calculator();
+            openCalculator();
         } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_CLOSE_CALCULATOR)) {
-            close_Calculator();
+            closeCalculator();
         } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_GO_Home)) {
-            go_home();
+            goHome();
         } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_GO_BACK)) {
-            go_back();
-        }  else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_OPEN_CAMERA)) {
-            open_Camera();
+            goBack();
+        } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_OPEN_CAMERA)) {
+            openCamera();
         } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_SHOOT)) {
-            tap();
-//            rootShellCmd.simulateKey(KeyEvent.KEYCODE_FOCUS);
-//            rootShellCmd.simulateKey(KeyEvent.KEYCODE_CAMERA);
+            rootShellCmd.simulateKey(KeyEvent.KEYCODE_FOCUS);
+            rootShellCmd.simulateKey(KeyEvent.KEYCODE_CAMERA);
         } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_OPEN_GAME)) {
-            open_Game();
+            openGame();
+        } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_SWIPE_LEFT)) {
+            swipeLeft();
+        } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_SWIPE_RIGHT)) {
+            swipeRight();
+        } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_SWIPE_UP)) {
+            swipeUp();
+        } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_SWIPE_DOWN)) {
+            swipeDown();
+        } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_TAP)) {
+            tap();
         }
-
     }
 
-    public void go_home(){
+    public void goHome() {
         rootShellCmd.simulateKey(KeyEvent.KEYCODE_HOME);
     }
 
-    public void go_back(){
+    public void goBack() {
         rootShellCmd.simulateKey(KeyEvent.KEYCODE_BACK);
     }
 
@@ -110,79 +118,77 @@ public class TouchController extends Service {
         rootShellCmd.simulateSwip(temp);
     }
 
-    public void swipe_down(){
+    public void swipeDown() {
         DisplayMetrics displaymetrics = getResources().getDisplayMetrics();
         int y = displaymetrics.heightPixels;
         int x = displaymetrics.widthPixels;
-        String temp = x / 2 +" "+ y/4 +" "+ x / 2 + " " + 3*y/4;
+        String temp = x / 2 + " " + y / 4 + " " + x / 2 + " " + 3 * y / 4;
         rootShellCmd.simulateSwip(temp);
     }
 
-    public void swipe_up(){
+    public void swipeUp() {
         DisplayMetrics displaymetrics = getResources().getDisplayMetrics();
         int y = displaymetrics.heightPixels;
         int x = displaymetrics.widthPixels;
-        String temp =  x / 2 + " " + 3*y/4+" "+x / 2 +" "+ y/4 ;
+        String temp = x / 2 + " " + 3 * y / 4 + " " + x / 2 + " " + y / 4;
         rootShellCmd.simulateSwip(temp);
     }
 
-    public void swipe_left(){
+    public void swipeLeft() {
         DisplayMetrics displaymetrics = getResources().getDisplayMetrics();
         int y = displaymetrics.heightPixels;
         int x = displaymetrics.widthPixels;
-        String temp =  x / 4 + " " + y/2+" "+3*x/4 +" "+ y/2;
+        String temp = x / 4 + " " + y / 2 + " " + 3 * x / 4 + " " + y / 2;
         rootShellCmd.simulateSwip(temp);
     }
 
-    public void swipe_right(){
+    public void swipeRight() {
         DisplayMetrics displaymetrics = getResources().getDisplayMetrics();
         int y = displaymetrics.heightPixels;
         int x = displaymetrics.widthPixels;
-        String temp =  3*x / 4 + " " + y/2+" "+ x/4 +" "+ y/2;
+        String temp = 3 * x / 4 + " " + y / 2 + " " + x / 4 + " " + y / 2;
         rootShellCmd.simulateSwip(temp);
     }
 
-    public void tap(){
+    public void tap() {
         DisplayMetrics displaymetrics = getResources().getDisplayMetrics();
         int y = displaymetrics.heightPixels;
         int x = displaymetrics.widthPixels;
-        String temp =  x / 2 + " " + y/2;
+        String temp = x / 2 + " " + y / 2;
         rootShellCmd.simulateTap(temp);
     }
 
 
-
-
-    public void open_Brower(){
+    public void openBrower() {
         //Toast.makeText(this, "open_Brower", Toast.LENGTH_SHORT).show();
         rootShellCmd.exec("am start -a android.intent.action.VIEW -d http://www.google.com --ez create_new_tab true");
     }
 
-    public void close_Brower(){
+    public void closeBrower() {
         //Toast.makeText(this, "close_Brower", Toast.LENGTH_SHORT).show();
         rootShellCmd.exec("am force-stop com.android.chrome");
         rootShellCmd.exec("am force-stop com.android.browser");
     }
 
 
-    public void open_Calculator(){
+    public void openCalculator() {
         rootShellCmd.exec("am start -n com.android.calculator2/com.android.calculator2.Calculator");
     }
 
-    public void close_Calculator(){
+    public void closeCalculator() {
         rootShellCmd.exec("am force-stop com.android.calculator2");
     }
 
-    public void open_Camera(){
-        rootShellCmd.exec("am start -n com.android.camera/com.android.camera.Camera");
+    public void openCamera() {
+        rootShellCmd.exec("monkey -p com.google.android.GoogleCamera -c android.intent.category.LAUNCHER 1");
     }
 
-    public void close_Camera(){
-        //go_home();
-//        rootShellCmd.exec("am force-stop com.android.camera");
+    public void close_Camera() {
+        goHome();
+        //rootShellCmd.exec("am force-stop com.android.camera");
     }
 
-    public void open_Game(){
+    public void openGame() {
         rootShellCmd.exec("monkey -p com.dotgears.flappybird -c android.intent.category.LAUNCHER 1");
 
     }
