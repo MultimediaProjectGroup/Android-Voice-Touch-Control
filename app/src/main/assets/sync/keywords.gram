@@ -2,25 +2,25 @@
 
 grammar keywords;
 
-<keyword> = hi my phone    |
-          open window  |
-          close window   |
-          open browser  |
-          close browser |
-          open calculator |
-          close calculator |
-          open game   |
-          close game |
-          notification |
-          go back |
-          go home|
-          open camera|
-          close camera|
-          shoot |
-          swipe left |
-          swipe right |
-          swipe down |
-          swipe up ;
+<keyword> =
+            open window  |
+            close window   |
+            open browser  |
+            close browser |
+            open calculator |
+            close calculator |
+            open game   |
+            close game |
+            notification |
+            go back |
+            go home|
+            open camera|
+            close camera|
+            shoot |
+            swipe left |
+            swipe right |
+            swipe down |
+            swipe up ;
 
 
 public <keywords> = <keyword>;

@@ -10,6 +10,7 @@ import java.io.IOException;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -20,13 +21,14 @@ import edu.cmu.pocketsphinx.Hypothesis;
 import edu.cmu.pocketsphinx.RecognitionListener;
 import edu.cmu.pocketsphinx.SpeechRecognizer;
 
-public class PocketSphinxActivity extends Activity implements
+public class GameActivity extends Activity implements
         RecognitionListener {
 
     private static final String CMD_SEARCH = "cmd";
     private SpeechRecognizer recognizer;
-    int i = 0;
 
+
+    int i = 0;
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
@@ -39,7 +41,7 @@ public class PocketSphinxActivity extends Activity implements
         startService(intent);
 
         try {
-            Assets assets = new Assets(PocketSphinxActivity.this);
+            Assets assets = new Assets(GameActivity.this);
             File assetDir = assets.syncAssets();
             setupRecognizer(assetDir);
         } catch (IOException e) {
@@ -60,6 +62,31 @@ public class PocketSphinxActivity extends Activity implements
 
     @Override
     public void onPartialResult(Hypothesis hypothesis) {
+        if (hypothesis != null) {
+            i++;
+            String text = hypothesis.getHypstr();
+            StringBuffer s = new StringBuffer();
+            s.append(i);
+            Log.i("ppppppppppppppppp", "text = " + text + " " + s);
+            Intent intent = new Intent(getApplicationContext(), TouchController.class);
+            if(text.equalsIgnoreCase(Constant.GAME_ACTION_LEFT)){
+                intent.setAction(Constant.ACTION_SWIPE_RIGHT);
+                startService(intent);
+            }else if(text.equalsIgnoreCase(Constant.GAME_ACTION_RIGHT)){
+                intent.setAction(Constant.ACTION_SWIPE_LEFT);
+                startService(intent);
+            }
+            else if(text.equalsIgnoreCase(Constant.GAME_ACTION_UP)){
+                intent.setAction(Constant.ACTION_SWIPE_UP);
+                startService(intent);
+            }
+            else if(text.equalsIgnoreCase(Constant.GAME_ACTION_DOWN)){
+                intent.setAction(Constant.ACTION_SWIPE_DOWN);
+                startService(intent);
+            }
+            recognizer.cancel();
+            recognizer.startListening(CMD_SEARCH);
+        }
     }
 
     /**
@@ -68,56 +95,8 @@ public class PocketSphinxActivity extends Activity implements
     @Override
     public void onResult(Hypothesis hypothesis) {
         //((TextView) findViewById(R.id.result_text)).setText("");
-        Intent intent = new Intent(getApplicationContext(), TouchController.class);
         if (hypothesis != null) {
             String text = hypothesis.getHypstr();
-            if (text.equalsIgnoreCase("open browser")) {
-                intent.setAction(Constant.ACTION_OPEN_BROWSER);
-                startService(intent);
-            } else if (text.equalsIgnoreCase("close browser")) {
-                intent.setAction(Constant.ACTION_CLOSE_BROWSER);
-                startService(intent);
-            } else if (text.equalsIgnoreCase("open calculator")) {
-                intent.setAction(Constant.ACTION_OPEN_CALCULATOR);
-                startService(intent);
-            } else if (text.equalsIgnoreCase("close calculator")) {
-                intent.setAction(Constant.ACTION_CLOSE_CALCULATOR);
-                startService(intent);
-            } else if (text.equalsIgnoreCase("notification")) {
-                intent.setAction(Constant.ACTION_NOTIFICATION);
-                startService(intent);
-            } else if (text.equalsIgnoreCase("go home")) {
-                intent.setAction(Constant.ACTION_GO_Home);
-                startService(intent);
-            } else if (text.equalsIgnoreCase("go back")) {
-                intent.setAction(Constant.ACTION_GO_BACK);
-                startService(intent);
-            } else if (text.equalsIgnoreCase("open camera")) {
-                intent.setAction(Constant.ACTION_OPEN_CAMERA);
-                startService(intent);
-            } else if (text.equalsIgnoreCase("shoot")) {
-                intent.setAction(Constant.ACTION_SHOOT);
-                startService(intent);
-            } else if (text.equalsIgnoreCase("open game")) {
-                intent.setAction(Constant.ACTION_OPEN_GAME);
-                startService(intent);
-            } else if (text.equalsIgnoreCase("swipe down")) {
-                intent.setAction(Constant.ACTION_SWIPE_DOWN);
-                startService(intent);
-            } else if (text.equalsIgnoreCase("swipe up")) {
-                intent.setAction(Constant.ACTION_SWIPE_UP);
-                startService(intent);
-            } else if (text.equalsIgnoreCase("swipe left")) {
-                intent.setAction(Constant.ACTION_SWIPE_LEFT);
-                startService(intent);
-            } else if (text.equalsIgnoreCase("swipe right")) {
-                intent.setAction(Constant.ACTION_SWIPE_RIGHT);
-                startService(intent);
-            }else if (text.equalsIgnoreCase("tap")) {
-                intent.setAction(Constant.ACTION_TAP);
-                startService(intent);
-            }
-
             makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
         }
     }
@@ -133,7 +112,9 @@ public class PocketSphinxActivity extends Activity implements
     public void onEndOfSpeech() {
 //if (!recognizer.getSearchName().equals(KWS_SEARCH))
 //switchSearch(KWS_SEARCH);
-        reset();
+
+        Log.i("ppppppppppppppppp", "endOfSpeech");
+        //reset();
     }
 
     private void setupRecognizer(File assetsDir) throws IOException {
@@ -172,7 +153,7 @@ public class PocketSphinxActivity extends Activity implements
         // recognizer.addGrammarSearch(CMD_SEARCH, cmdGrammar);
 
 
-        File keywords = new File(assetsDir, "keywords.gram");
+        File keywords = new File(assetsDir, "gamewords.gram");
         recognizer.addGrammarSearch(CMD_SEARCH, keywords);
 
         // Create grammar-based search for digit recognition
@@ -196,11 +177,13 @@ public class PocketSphinxActivity extends Activity implements
     @Override
     public void onTimeout() {
 //        switchSearch(KWS_SEARCH);
-        reset();
+        //reset();
     }
 
     private void reset() {
-        recognizer.stop();
+        recognizer.cancel();
         recognizer.startListening(CMD_SEARCH);
     }
+
+
 }

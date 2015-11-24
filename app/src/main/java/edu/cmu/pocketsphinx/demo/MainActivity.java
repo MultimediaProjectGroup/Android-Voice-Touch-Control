@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.setGameBtn:
-                //Intent intent = new Intent(MainActivity.this,SettingActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(MainActivity.this,GameActivity.class);
+                startActivity(intent);
                 break;
             case R.id.startBtn:
                 Intent intent2 = new Intent(MainActivity.this, PocketSphinxActivity.class);

@@ -19,7 +19,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Start Flappy Bird Control"
+            android:text="Start Game Control"
             android:id="@+id/setGameBtn" />
 
     </LinearLayout>

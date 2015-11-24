@@ -9,4 +9,5 @@
     <string name="forecast_caption">To try recognition of a weather forecast like \"sunny spells on Wednesday\".</string>
     <string name="phone_caption">To try phonetic recognition say anything.</string>
     <string name="cmd_caption">Say \"up\", \"down\", \"left\", \"right\", \"forwards\" or \"backwards\" to choose a command.</string>
+    <string name="title_activity_game">GameActivity</string>
 </resources>
