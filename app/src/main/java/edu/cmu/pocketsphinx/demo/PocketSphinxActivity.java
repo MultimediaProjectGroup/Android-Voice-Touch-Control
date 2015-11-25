@@ -26,6 +26,7 @@ public class PocketSphinxActivity extends Activity implements
 
     private static final String CMD_SEARCH = "cmd";
     private static final String DIGITS_SEARCH = "digits";
+    //private static final String PHONE_SEARCH = "phone";
     private SpeechRecognizer recognizer;
 
     @Override
@@ -223,7 +224,7 @@ public class PocketSphinxActivity extends Activity implements
                 .setKeywordThreshold(1e-1f)
 
                         // Use context-independent phonetic search, context-dependent is too slow for mobile
-                .setBoolean("-allphone_ci", true)
+                //.setBoolean("-allphone_ci", true)
 
                         //.setInteger("-pl_window",10)
 
@@ -251,15 +252,13 @@ public class PocketSphinxActivity extends Activity implements
         File digitsGrammar = new File(assetsDir, "digits.gram");
         recognizer.addGrammarSearch(DIGITS_SEARCH, digitsGrammar);
 
-
-
         // Create language model search
-      /*  File languageModel = new File(assetsDir, "weather.dmp");
-        recognizer.addNgramSearch(FORECAST_SEARCH, languageModel);
+        /*File languageModel = new File(assetsDir, "en-phone.dmp");
+        recognizer.addAllphoneSearch(PHONE_SEARCH, languageModel);*/
         
         // Phonetic search
-        File phoneticModel = new File(assetsDir, "en-phone.dmp");
-        recognizer.addAllphoneSearch(PHONE_SEARCH, phoneticModel);*/
+       /* File languageModel = new File(assetsDir, "en-us.lm.bin");
+        recognizer.addNgramSearch(PHONE_SEARCH, languageModel);*/
     }
 
     @Override
