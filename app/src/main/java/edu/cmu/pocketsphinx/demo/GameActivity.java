@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +24,7 @@ import edu.cmu.pocketsphinx.RecognitionListener;
 import edu.cmu.pocketsphinx.SpeechRecognizer;
 
 public class GameActivity extends Activity implements
-        RecognitionListener {
+        RecognitionListener , View.OnClickListener{
 
     private static final String CMD_SEARCH = "cmd";
     private SpeechRecognizer recognizer;
@@ -33,12 +35,13 @@ public class GameActivity extends Activity implements
     public void onCreate(Bundle state) {
         super.onCreate(state);
 
-        setContentView(R.layout.main);
-        ((TextView) findViewById(R.id.caption_text))
-                .setText("Preparing the recognizer");
+        setContentView(R.layout.activity_game);
 
         Intent intent = new Intent(getApplicationContext(), TouchController.class);
         startService(intent);
+
+        Button stopSer = (Button)findViewById(R.id.stopGameControlBtn);
+        stopSer.setOnClickListener(this);
 
         try {
             Assets assets = new Assets(GameActivity.this);
@@ -47,8 +50,6 @@ public class GameActivity extends Activity implements
         } catch (IOException e) {
             // oops
         }
-
-        ((TextView) findViewById(R.id.caption_text)).setText("Android Voice Control");
 
         reset();
     }
@@ -165,7 +166,7 @@ public class GameActivity extends Activity implements
 
     @Override
     public void onError(Exception error) {
-        ((TextView) findViewById(R.id.caption_text)).setText(error.getMessage());
+        //((TextView) findViewById(R.id.caption_text)).setText(error.getMessage());
     }
 
     @Override
@@ -180,4 +181,14 @@ public class GameActivity extends Activity implements
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.stopGameControlBtn:
+                Intent intent = new Intent(getApplicationContext(), TouchController.class);
+                stopService(intent);
+                break;
+            default:
+        }
+    }
 }
