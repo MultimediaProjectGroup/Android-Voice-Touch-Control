@@ -24,13 +24,14 @@ import edu.cmu.pocketsphinx.RecognitionListener;
 import edu.cmu.pocketsphinx.SpeechRecognizer;
 
 public class GameActivity extends Activity implements
-        RecognitionListener , View.OnClickListener{
+        RecognitionListener, View.OnClickListener {
 
     private static final String CMD_SEARCH = "cmd";
     private SpeechRecognizer recognizer;
 
 
     int i = 0;
+
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
@@ -40,7 +41,7 @@ public class GameActivity extends Activity implements
         Intent intent = new Intent(getApplicationContext(), TouchController.class);
         startService(intent);
 
-        Button stopSer = (Button)findViewById(R.id.stopGameControlBtn);
+        Button stopSer = (Button) findViewById(R.id.stopGameControlBtn);
         stopSer.setOnClickListener(this);
 
         try {
@@ -70,18 +71,16 @@ public class GameActivity extends Activity implements
             s.append(i);
             Log.i("ppppppppppppppppp", "text = " + text + " " + s);
             Intent intent = new Intent(getApplicationContext(), TouchController.class);
-            if(text.equalsIgnoreCase(Constant.GAME_ACTION_LEFT)){
+            if (text.equalsIgnoreCase(Constant.GAME_ACTION_LEFT)) {
                 intent.setAction(Constant.ACTION_SWIPE_RIGHT);
                 startService(intent);
-            }else if(text.equalsIgnoreCase(Constant.GAME_ACTION_RIGHT)){
+            } else if (text.equalsIgnoreCase(Constant.GAME_ACTION_RIGHT)) {
                 intent.setAction(Constant.ACTION_SWIPE_LEFT);
                 startService(intent);
-            }
-            else if(text.equalsIgnoreCase(Constant.GAME_ACTION_UP)){
+            } else if (text.equalsIgnoreCase(Constant.GAME_ACTION_UP)) {
                 intent.setAction(Constant.ACTION_SWIPE_UP);
                 startService(intent);
-            }
-            else if(text.equalsIgnoreCase(Constant.GAME_ACTION_DOWN)){
+            } else if (text.equalsIgnoreCase(Constant.GAME_ACTION_DOWN)) {
                 intent.setAction(Constant.ACTION_SWIPE_DOWN);
                 startService(intent);
             }
@@ -183,7 +182,7 @@ public class GameActivity extends Activity implements
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.stopGameControlBtn:
                 Intent intent = new Intent(getApplicationContext(), TouchController.class);
                 stopService(intent);

@@ -6,25 +6,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button setComBtn = (Button)findViewById(R.id.setGameBtn);
+        Button setComBtn = (Button) findViewById(R.id.setGameBtn);
         setComBtn.setOnClickListener(this);
 
-        Button startBtn = (Button)findViewById(R.id.startBtn);
+        Button startBtn = (Button) findViewById(R.id.startBtn);
         startBtn.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.setGameBtn:
-                Intent intent = new Intent(MainActivity.this,GameActivity.class);
+                Intent intent = new Intent(MainActivity.this, GameActivity.class);
                 startActivity(intent);
                 break;
             case R.id.startBtn:

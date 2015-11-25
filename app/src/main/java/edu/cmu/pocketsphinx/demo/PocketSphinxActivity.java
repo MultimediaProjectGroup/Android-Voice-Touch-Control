@@ -13,6 +13,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +24,7 @@ import edu.cmu.pocketsphinx.RecognitionListener;
 import edu.cmu.pocketsphinx.SpeechRecognizer;
 
 public class PocketSphinxActivity extends Activity implements
-        RecognitionListener {
+        RecognitionListener, View.OnClickListener {
 
     private static final String CMD_SEARCH = "cmd";
     private static final String DIGITS_SEARCH = "digits";
@@ -39,7 +41,8 @@ public class PocketSphinxActivity extends Activity implements
 
         Intent intent = new Intent(getApplicationContext(), TouchController.class);
         startService(intent);
-
+        Button stopSer = (Button) findViewById(R.id.stopVoiceBtn);
+        stopSer.setOnClickListener(this);
         try {
             Assets assets = new Assets(PocketSphinxActivity.this);
             File assetDir = assets.syncAssets();
@@ -73,13 +76,13 @@ public class PocketSphinxActivity extends Activity implements
         Intent intent = new Intent(getApplicationContext(), TouchController.class);
 
 
-        if(recognizer.getSearchName().equalsIgnoreCase(DIGITS_SEARCH)){
+        if (recognizer.getSearchName().equalsIgnoreCase(DIGITS_SEARCH)) {
             if (hypothesis != null) {
                 String text = hypothesis.getHypstr();
                 String[] temp = text.split(" ");
                 ArrayList<String> arrayList = new ArrayList<>();
-                for(int i=0;i<temp.length;i++){
-                    switch (temp[i]){
+                for (int i = 0; i < temp.length; i++) {
+                    switch (temp[i]) {
                         case "zero":
                             arrayList.add("input tap 350 1600");
                             break;
@@ -131,7 +134,7 @@ public class PocketSphinxActivity extends Activity implements
                     }
                 }
                 intent.setAction(Constant.ACTION_CALCULATION);
-                intent.putStringArrayListExtra("calArray",arrayList);
+                intent.putStringArrayListExtra("calArray", arrayList);
                 startService(intent);
             }
         }
@@ -184,14 +187,14 @@ public class PocketSphinxActivity extends Activity implements
             } else if (text.equalsIgnoreCase("swipe right")) {
                 intent.setAction(Constant.ACTION_SWIPE_RIGHT);
                 startService(intent);
-            }else if (text.equalsIgnoreCase("tap")) {
+            } else if (text.equalsIgnoreCase("tap")) {
                 intent.setAction(Constant.ACTION_TAP);
                 startService(intent);
-            }else if (text.equalsIgnoreCase("open facebook")) {
-                intent.setAction(Constant.ACTION_TAP);
+            } else if (text.equalsIgnoreCase("open facebook")) {
+                intent.setAction(Constant.ACTION_OPEN_FACEBOOK);
                 startService(intent);
-            }else if (text.equalsIgnoreCase("close facebook")) {
-                intent.setAction(Constant.ACTION_TAP);
+            } else if (text.equalsIgnoreCase("close facebook")) {
+                intent.setAction(Constant.ACTION_CLOSE_FACEBOOK);
                 startService(intent);
             }
 
@@ -256,7 +259,7 @@ public class PocketSphinxActivity extends Activity implements
         // Create grammar-based search for digit recognition
         File digitsGrammar = new File(assetsDir, "digits.gram");
         recognizer.addGrammarSearch(DIGITS_SEARCH, digitsGrammar);
-        
+
         // Create language model search
       /*  File languageModel = new File(assetsDir, "weather.dmp");
         recognizer.addNgramSearch(FORECAST_SEARCH, languageModel);
@@ -285,5 +288,16 @@ public class PocketSphinxActivity extends Activity implements
         recognizer.stop();
         // If we are not spotting, start listening with timeout (10000 ms or 10 seconds).
         recognizer.startListening(searchName);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.stopVoiceBtn:
+                Intent intent = new Intent(getApplicationContext(), TouchController.class);
+                stopService(intent);
+                break;
+            default:
+        }
     }
 }

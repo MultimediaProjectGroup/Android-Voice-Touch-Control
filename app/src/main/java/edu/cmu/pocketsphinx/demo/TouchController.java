@@ -93,9 +93,9 @@ public class TouchController extends Service {
         } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_CALCULATION)) {
             ArrayList<String> arr = intent.getStringArrayListExtra("calArray");
             cal(arr);
-        }else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_OPEN_FACEBOOK)) {
+        } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_OPEN_FACEBOOK)) {
             openFacebook();
-        }else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_CLOSE_FACEBOOK)) {
+        } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_CLOSE_FACEBOOK)) {
             closeFacebook();
         }
     }
@@ -203,16 +203,16 @@ public class TouchController extends Service {
 
     }
 
-    public void openFacebook(){
+    public void openFacebook() {
         rootShellCmd.exec("monkey -p com.facebook.katana -c android.intent.category.LAUNCHER 1");
     }
 
-    public void closeFacebook(){
+    public void closeFacebook() {
         rootShellCmd.exec("am force-stop com.facebook.katana");
     }
 
-    public void cal(ArrayList<String> arrayList){
-        for (String s:arrayList){
+    public void cal(ArrayList<String> arrayList) {
+        for (String s : arrayList) {
             rootShellCmd.exec(s);
         }
     }

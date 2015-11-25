@@ -18,6 +18,7 @@ grammar digits;
           seven |
           eight |
           nine  |
+          point |
           close calculator;
 
 public <digits> = <digit>+;

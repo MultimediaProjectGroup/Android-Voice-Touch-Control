@@ -10,16 +10,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.cmu.pocketsphinx.demo.GameActivity">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Stop Voice Control"
-        android:id="@+id/stopGameControlBtn" />
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="vertical"
@@ -97,5 +91,17 @@
                 android:id="@+id/textView20" />
         </LinearLayout>
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Stop Voice Control"
+            android:id="@+id/stopGameControlBtn"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
 
 </LinearLayout>

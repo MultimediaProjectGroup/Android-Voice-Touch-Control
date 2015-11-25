@@ -16,7 +16,7 @@ public class Constant {
     public static final String ACTION_OPEN_CAMERA = "open camera";
     public static final String ACTION_CLOSE_CAMERA = "close camera";
     public static final String ACTION_OPEN_FACEBOOK = "open facebook";
-    public static final String ACTION_CLOSE_FACEBOOK="close facebook";
+    public static final String ACTION_CLOSE_FACEBOOK = "close facebook";
     public static final String ACTION_TAKE_A_PICTURE = "take a picture";
     public static final String ACTION_OPEN_GAME = "open game";
     public static final String ACTION_TAP = "tap";
@@ -26,8 +26,8 @@ public class Constant {
     public static final String ACTION_SWIPE_UP = "swipe up";
 
 
-    public static final String GAME_ACTION_LEFT="left";
-    public static final String GAME_ACTION_RIGHT="right";
+    public static final String GAME_ACTION_LEFT = "left";
+    public static final String GAME_ACTION_RIGHT = "right";
     public static final String GAME_ACTION_UP = "jump";
     public static final String GAME_ACTION_DOWN = "down";
 

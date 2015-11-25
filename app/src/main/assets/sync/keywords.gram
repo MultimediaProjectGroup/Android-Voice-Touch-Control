@@ -7,8 +7,6 @@ grammar keywords;
             close browser |
             open calculator |
             close calculator |
-            open game   |
-            close game |
             notification |
             go back |
             go home|
