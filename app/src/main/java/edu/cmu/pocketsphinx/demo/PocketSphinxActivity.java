@@ -7,6 +7,7 @@ import static edu.cmu.pocketsphinx.SpeechRecognizerSetup.defaultSetup;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,6 +25,7 @@ public class PocketSphinxActivity extends Activity implements
         RecognitionListener {
 
     private static final String CMD_SEARCH = "cmd";
+    private static final String DIGITS_SEARCH = "digits";
     private SpeechRecognizer recognizer;
     int i = 0;
 
@@ -32,8 +34,8 @@ public class PocketSphinxActivity extends Activity implements
         super.onCreate(state);
 
         setContentView(R.layout.main);
-        ((TextView) findViewById(R.id.caption_text))
-                .setText("Preparing the recognizer");
+//        ((TextView) findViewById(R.id.caption_text))
+//                .setText("Preparing the recognizer");
 
         Intent intent = new Intent(getApplicationContext(), TouchController.class);
         startService(intent);
@@ -46,7 +48,7 @@ public class PocketSphinxActivity extends Activity implements
             // oops
         }
 
-        ((TextView) findViewById(R.id.caption_text)).setText("Android Voice Control");
+        //((TextView) findViewById(R.id.caption_text)).setText("Android Voice Control");
 
         reset();
     }
@@ -69,6 +71,71 @@ public class PocketSphinxActivity extends Activity implements
     public void onResult(Hypothesis hypothesis) {
         //((TextView) findViewById(R.id.result_text)).setText("");
         Intent intent = new Intent(getApplicationContext(), TouchController.class);
+
+
+        if(recognizer.getSearchName().equalsIgnoreCase(DIGITS_SEARCH)){
+            if (hypothesis != null) {
+                String text = hypothesis.getHypstr();
+                String[] temp = text.split(" ");
+                ArrayList<String> arrayList = new ArrayList<>();
+                for(int i=0;i<temp.length;i++){
+                    switch (temp[i]){
+                        case "zero":
+                            arrayList.add("input tap 350 1600");
+                            break;
+                        case "one":
+                            arrayList.add("input tap 160 1400");
+                            break;
+                        case "two":
+                            arrayList.add("input tap 350 1400");
+                            break;
+                        case "three":
+                            arrayList.add("input tap 550 1400");
+                            break;
+                        case "four":
+                            arrayList.add("input tap 160 1200");
+                            break;
+                        case "five":
+                            arrayList.add("input tap 350 1200");
+                            break;
+                        case "six":
+                            arrayList.add("input tap 550 1200");
+                            break;
+                        case "seven":
+                            arrayList.add("input tap 160 900");
+                            break;
+                        case "eight":
+                            arrayList.add("input tap 350 900");
+                            break;
+                        case "nine":
+                            arrayList.add("input tap 550 900");
+                            break;
+                        case "plus":
+                            arrayList.add("input tap 900 1600");
+                            break;
+                        case "minus":
+                            arrayList.add("input tap 900 1400");
+                            break;
+                        case "divide":
+                            arrayList.add("input tap 900 1000");
+                            break;
+                        case "multiple":
+                            arrayList.add("input tap 900 1200");
+                            break;
+                        case "reset":
+                            arrayList.add("input tap 900 800");
+                            break;
+                        case "equal":
+                            arrayList.add("input tap 550 1600");
+                            break;
+                    }
+                }
+                intent.setAction(Constant.ACTION_CALCULATION);
+                intent.putStringArrayListExtra("calArray",arrayList);
+                startService(intent);
+            }
+        }
+
         if (hypothesis != null) {
             String text = hypothesis.getHypstr();
             if (text.equalsIgnoreCase("open browser")) {
@@ -80,9 +147,13 @@ public class PocketSphinxActivity extends Activity implements
             } else if (text.equalsIgnoreCase("open calculator")) {
                 intent.setAction(Constant.ACTION_OPEN_CALCULATOR);
                 startService(intent);
+                switchSearch(DIGITS_SEARCH);
+
             } else if (text.equalsIgnoreCase("close calculator")) {
                 intent.setAction(Constant.ACTION_CLOSE_CALCULATOR);
                 startService(intent);
+                reset();
+
             } else if (text.equalsIgnoreCase("notification")) {
                 intent.setAction(Constant.ACTION_NOTIFICATION);
                 startService(intent);
@@ -95,8 +166,8 @@ public class PocketSphinxActivity extends Activity implements
             } else if (text.equalsIgnoreCase("open camera")) {
                 intent.setAction(Constant.ACTION_OPEN_CAMERA);
                 startService(intent);
-            } else if (text.equalsIgnoreCase("shoot")) {
-                intent.setAction(Constant.ACTION_SHOOT);
+            } else if (text.equalsIgnoreCase("take a picture")) {
+                intent.setAction(Constant.ACTION_TAKE_A_PICTURE);
                 startService(intent);
             } else if (text.equalsIgnoreCase("open game")) {
                 intent.setAction(Constant.ACTION_OPEN_GAME);
@@ -137,9 +208,10 @@ public class PocketSphinxActivity extends Activity implements
      */
     @Override
     public void onEndOfSpeech() {
-//if (!recognizer.getSearchName().equals(KWS_SEARCH))
-//switchSearch(KWS_SEARCH);
-        reset();
+        if (recognizer.getSearchName().equals(DIGITS_SEARCH))
+            switchSearch(DIGITS_SEARCH);
+        else
+            switchSearch(CMD_SEARCH);
     }
 
     private void setupRecognizer(File assetsDir) throws IOException {
@@ -148,13 +220,13 @@ public class PocketSphinxActivity extends Activity implements
 
         recognizer = defaultSetup()
                 .setAcousticModel(new File(assetsDir, "en-us-ptm"))
-                .setDictionary(new File(assetsDir, "keywords.dict"))
+                .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
 
                         // To disable logging of raw audio comment out this call (takes a lot of space on the device)
                 .setRawLogDir(assetsDir)
 
                         // Threshold to tune for keyphrase to balance between false alarms and misses
-                .setKeywordThreshold(1e-20f)
+                .setKeywordThreshold(1e-1f)
 
                         // Use context-independent phonetic search, context-dependent is too slow for mobile
                 .setBoolean("-allphone_ci", true)
@@ -182,11 +254,11 @@ public class PocketSphinxActivity extends Activity implements
         recognizer.addGrammarSearch(CMD_SEARCH, keywords);
 
         // Create grammar-based search for digit recognition
-        /*File digitsGrammar = new File(assetsDir, "digits.gram");
+        File digitsGrammar = new File(assetsDir, "digits.gram");
         recognizer.addGrammarSearch(DIGITS_SEARCH, digitsGrammar);
         
         // Create language model search
-        File languageModel = new File(assetsDir, "weather.dmp");
+      /*  File languageModel = new File(assetsDir, "weather.dmp");
         recognizer.addNgramSearch(FORECAST_SEARCH, languageModel);
         
         // Phonetic search
@@ -196,17 +268,22 @@ public class PocketSphinxActivity extends Activity implements
 
     @Override
     public void onError(Exception error) {
-        ((TextView) findViewById(R.id.caption_text)).setText(error.getMessage());
+//        ((TextView) findViewById(R.id.caption_text)).setText(error.getMessage());
     }
 
     @Override
     public void onTimeout() {
-//        switchSearch(KWS_SEARCH);
         reset();
     }
 
     private void reset() {
         recognizer.stop();
         recognizer.startListening(CMD_SEARCH);
+    }
+
+    private void switchSearch(String searchName) {
+        recognizer.stop();
+        // If we are not spotting, start listening with timeout (10000 ms or 10 seconds).
+        recognizer.startListening(searchName);
     }
 }

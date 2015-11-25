@@ -3,6 +3,7 @@
 grammar digits;
 
 <digit> = plus   |
+          reset |
           minus |
           multiple |
           divide|

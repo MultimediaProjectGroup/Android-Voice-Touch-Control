@@ -14,13 +14,12 @@ grammar keywords;
             go home|
             open camera|
             close camera|
-            shoot |
             swipe left |
             swipe right |
             swipe down |
             swipe up |
             open facebook|
+            take a picture|
             close facebook;
-
 
 public <keywords> = <keyword>;

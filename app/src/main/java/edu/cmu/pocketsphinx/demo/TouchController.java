@@ -9,6 +9,8 @@ import android.view.KeyEvent;
 import android.widget.Toast;
 
 
+import java.util.ArrayList;
+
 import ipc.RootShellCmd;
 
 
@@ -71,9 +73,11 @@ public class TouchController extends Service {
             goBack();
         } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_OPEN_CAMERA)) {
             openCamera();
-        } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_SHOOT)) {
+        } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_TAKE_A_PICTURE)) {
             rootShellCmd.simulateKey(KeyEvent.KEYCODE_FOCUS);
             rootShellCmd.simulateKey(KeyEvent.KEYCODE_CAMERA);
+        } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_CLOSE_CAMERA)) {
+            goHome();
         } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_OPEN_GAME)) {
             openGame();
         } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_SWIPE_LEFT)) {
@@ -86,6 +90,13 @@ public class TouchController extends Service {
             swipeDown();
         } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_TAP)) {
             tap();
+        } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_CALCULATION)) {
+            ArrayList<String> arr = intent.getStringArrayListExtra("calArray");
+            cal(arr);
+        }else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_OPEN_FACEBOOK)) {
+            openFacebook();
+        }else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_CLOSE_FACEBOOK)) {
+            closeFacebook();
         }
     }
 
@@ -183,7 +194,7 @@ public class TouchController extends Service {
         rootShellCmd.exec("monkey -p com.google.android.GoogleCamera -c android.intent.category.LAUNCHER 1");
     }
 
-    public void close_Camera() {
+    public void closeCamera() {
         rootShellCmd.exec("am force-stop com.android.camera");
     }
 
@@ -198,6 +209,12 @@ public class TouchController extends Service {
 
     public void closeFacebook(){
         rootShellCmd.exec("am force-stop com.facebook.katana");
+    }
+
+    public void cal(ArrayList<String> arrayList){
+        for (String s:arrayList){
+            rootShellCmd.exec(s);
+        }
     }
 
 }
