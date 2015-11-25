@@ -30,4 +30,6 @@ public class Constant {
     public static final String GAME_ACTION_RIGHT="right";
     public static final String GAME_ACTION_UP = "jump";
     public static final String GAME_ACTION_DOWN = "down";
+
+    public static final String ACTION_CALCULATION = "calculation";
 }

@@ -2,7 +2,11 @@
 
 grammar digits;
 
-<digit> = oh    |
+<digit> = plus   |
+          minus |
+          multiple |
+          divide|
+          equal |
           zero  |
           one   |
           two   |
@@ -12,6 +16,7 @@ grammar digits;
           six   |
           seven |
           eight |
-          nine  ;
+          nine  |
+          close calculator;
 
 public <digits> = <digit>+;

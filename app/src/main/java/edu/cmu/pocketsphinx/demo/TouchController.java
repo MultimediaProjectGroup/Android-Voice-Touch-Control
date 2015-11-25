@@ -71,8 +71,6 @@ public class TouchController extends Service {
             goBack();
         } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_OPEN_CAMERA)) {
             openCamera();
-        } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_CLOSE_CAMERA)) {
-            closeCamera();
         } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_SHOOT)) {
             rootShellCmd.simulateKey(KeyEvent.KEYCODE_FOCUS);
             rootShellCmd.simulateKey(KeyEvent.KEYCODE_CAMERA);
@@ -88,10 +86,6 @@ public class TouchController extends Service {
             swipeDown();
         } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_TAP)) {
             tap();
-        }else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_OPEN_FACEBOOK)) {
-            openFacebook();
-        } else if (intent.getAction().equalsIgnoreCase(Constant.ACTION_CLOSE_FACEBOOK)) {
-            closeFacebook();
         }
     }
 
@@ -189,7 +183,7 @@ public class TouchController extends Service {
         rootShellCmd.exec("monkey -p com.google.android.GoogleCamera -c android.intent.category.LAUNCHER 1");
     }
 
-    public void closeCamera() {
+    public void close_Camera() {
         rootShellCmd.exec("am force-stop com.android.camera");
     }
 
