@@ -12,10 +12,8 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import edu.cmu.pocketsphinx.Assets;
@@ -29,7 +27,6 @@ public class PocketSphinxActivity extends Activity implements
     private static final String CMD_SEARCH = "cmd";
     private static final String DIGITS_SEARCH = "digits";
     private SpeechRecognizer recognizer;
-    int i = 0;
 
     @Override
     public void onCreate(Bundle state) {
@@ -75,14 +72,13 @@ public class PocketSphinxActivity extends Activity implements
         //((TextView) findViewById(R.id.result_text)).setText("");
         Intent intent = new Intent(getApplicationContext(), TouchController.class);
 
-
         if (recognizer.getSearchName().equalsIgnoreCase(DIGITS_SEARCH)) {
             if (hypothesis != null) {
                 String text = hypothesis.getHypstr();
                 String[] temp = text.split(" ");
                 ArrayList<String> arrayList = new ArrayList<>();
-                for (int i = 0; i < temp.length; i++) {
-                    switch (temp[i]) {
+                for (String aTemp : temp) {
+                    switch (aTemp) {
                         case "zero":
                             arrayList.add("input tap 350 1600");
                             break;
@@ -151,12 +147,10 @@ public class PocketSphinxActivity extends Activity implements
                 intent.setAction(Constant.ACTION_OPEN_CALCULATOR);
                 startService(intent);
                 switchSearch(DIGITS_SEARCH);
-
             } else if (text.equalsIgnoreCase("close calculator")) {
                 intent.setAction(Constant.ACTION_CLOSE_CALCULATOR);
                 startService(intent);
                 reset();
-
             } else if (text.equalsIgnoreCase("notification")) {
                 intent.setAction(Constant.ACTION_NOTIFICATION);
                 startService(intent);
@@ -187,7 +181,7 @@ public class PocketSphinxActivity extends Activity implements
             } else if (text.equalsIgnoreCase("swipe right")) {
                 intent.setAction(Constant.ACTION_SWIPE_RIGHT);
                 startService(intent);
-            } else if (text.equalsIgnoreCase("tap")) {
+            } else if (text.equalsIgnoreCase("click")) {
                 intent.setAction(Constant.ACTION_TAP);
                 startService(intent);
             } else if (text.equalsIgnoreCase("open facebook")) {
@@ -211,10 +205,7 @@ public class PocketSphinxActivity extends Activity implements
      */
     @Override
     public void onEndOfSpeech() {
-        if (recognizer.getSearchName().equals(DIGITS_SEARCH))
-            switchSearch(DIGITS_SEARCH);
-        else
-            switchSearch(CMD_SEARCH);
+        switchSearch(recognizer.getSearchName());
     }
 
     private void setupRecognizer(File assetsDir) throws IOException {
@@ -259,6 +250,8 @@ public class PocketSphinxActivity extends Activity implements
         // Create grammar-based search for digit recognition
         File digitsGrammar = new File(assetsDir, "digits.gram");
         recognizer.addGrammarSearch(DIGITS_SEARCH, digitsGrammar);
+
+
 
         // Create language model search
       /*  File languageModel = new File(assetsDir, "weather.dmp");

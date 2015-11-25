@@ -12,7 +12,7 @@ grammar cmds;
           right |
           search |
           swipe |
-          tap ;
+          tap   | ;
 
 
 public <cmds> = <cmd>;

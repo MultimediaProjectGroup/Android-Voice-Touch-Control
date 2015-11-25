@@ -18,6 +18,7 @@ grammar keywords;
             swipe up |
             open facebook|
             take a picture|
-            close facebook;
+            close facebook|
+            click;
 
 public <keywords> = <keyword>;
