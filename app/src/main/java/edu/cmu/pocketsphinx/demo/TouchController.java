@@ -184,8 +184,7 @@ public class TouchController extends Service {
     }
 
     public void close_Camera() {
-        goHome();
-        //rootShellCmd.exec("am force-stop com.android.camera");
+        rootShellCmd.exec("am force-stop com.android.camera");
     }
 
     public void openGame() {
@@ -193,6 +192,12 @@ public class TouchController extends Service {
 
     }
 
+    public void openFacebook(){
+        rootShellCmd.exec("monkey -p com.facebook.katana -c android.intent.category.LAUNCHER 1");
+    }
 
+    public void closeFacebook(){
+        rootShellCmd.exec("am force-stop com.facebook.katana");
+    }
 
 }

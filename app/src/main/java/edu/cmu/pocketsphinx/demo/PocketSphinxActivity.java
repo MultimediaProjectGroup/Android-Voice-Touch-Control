@@ -116,6 +116,12 @@ public class PocketSphinxActivity extends Activity implements
             }else if (text.equalsIgnoreCase("tap")) {
                 intent.setAction(Constant.ACTION_TAP);
                 startService(intent);
+            }else if (text.equalsIgnoreCase("open facebook")) {
+                intent.setAction(Constant.ACTION_TAP);
+                startService(intent);
+            }else if (text.equalsIgnoreCase("close facebook")) {
+                intent.setAction(Constant.ACTION_TAP);
+                startService(intent);
             }
 
             makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();

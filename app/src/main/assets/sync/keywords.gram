@@ -3,8 +3,6 @@
 grammar keywords;
 
 <keyword> =
-            open window  |
-            close window   |
             open browser  |
             close browser |
             open calculator |
@@ -20,7 +18,9 @@ grammar keywords;
             swipe left |
             swipe right |
             swipe down |
-            swipe up ;
+            swipe up |
+            open facebook|
+            close facebook;
 
 
 public <keywords> = <keyword>;

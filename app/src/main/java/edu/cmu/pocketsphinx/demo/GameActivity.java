@@ -120,23 +120,17 @@ public class GameActivity extends Activity implements
     private void setupRecognizer(File assetsDir) throws IOException {
         // The recognizer can be configured to perform multiple searches
         // of different kind and switch between them
-
         recognizer = defaultSetup()
                 .setAcousticModel(new File(assetsDir, "en-us-ptm"))
                 .setDictionary(new File(assetsDir, "keywords.dict"))
-
                         // To disable logging of raw audio comment out this call (takes a lot of space on the device)
                 .setRawLogDir(assetsDir)
-
                         // Threshold to tune for keyphrase to balance between false alarms and misses
                 .setKeywordThreshold(1e-20f)
-
                         // Use context-independent phonetic search, context-dependent is too slow for mobile
                 .setBoolean("-allphone_ci", true)
 
                         //.setInteger("-pl_window",10)
-
-
                 .getRecognizer();
 
         recognizer.addListener(this);

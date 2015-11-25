@@ -15,6 +15,8 @@ public class Constant {
     public static final String ACTION_GO_Home = "go home";
     public static final String ACTION_OPEN_CAMERA = "open camera";
     public static final String ACTION_CLOSE_CAMERA = "close camera";
+    public static final String ACTION_OPEN_FACEBOOK = "open facebook";
+    public static final String ACTION_CLOSE_FACEBOOK="close facebook";
     public static final String ACTION_SHOOT = "shoot";
     public static final String ACTION_OPEN_GAME = "open game";
     public static final String ACTION_TAP = "tap";
