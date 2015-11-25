@@ -6,7 +6,7 @@ grammar digits;
           reset |
           minus |
           multiple |
-          divide|
+          divide by |
           equal |
           zero  |
           one   |
